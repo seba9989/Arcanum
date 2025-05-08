@@ -4,6 +4,8 @@ import { sha256 } from '@oslojs/crypto/sha2';
 import { encodeBase64url, encodeHexLowerCase } from '@oslojs/encoding';
 import { db } from '$lib/server/db';
 import * as table from '$lib/server/db/schema';
+import { env } from '$env/dynamic/private';
+import { hash, verify } from '@node-rs/argon2';
 
 const DAY_IN_MS = 1000 * 60 * 60 * 24;
 
@@ -79,3 +81,28 @@ export function deleteSessionTokenCookie(event: RequestEvent) {
 		path: '/'
 	});
 }
+
+async function initRoot() {
+	if (!env.ROOT_USERNAME) throw new Error('ROOT_USERNAME is not set');
+	if (!env.ROOT_PASSWORD) throw new Error('ROOT_PASSWORD is not set');
+
+	const user = await db.query.user.findFirst({
+		where: (user, { eq }) => eq(user.username, env.ROOT_USERNAME)
+	});
+
+	if (user) return;
+
+	const passwordHash = await hash(env.ROOT_PASSWORD, {
+		// recommended minimum parameters
+		memoryCost: 19456,
+		timeCost: 2,
+		outputLen: 32,
+		parallelism: 1
+	});
+
+	const userId = crypto.randomUUID();
+
+	await db.insert(table.user).values({ id: userId, username: env.ROOT_USERNAME, passwordHash });
+}
+
+await initRoot();
