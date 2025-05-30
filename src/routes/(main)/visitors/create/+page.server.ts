@@ -9,7 +9,6 @@ export const load = (async () => {
 	return {};
 }) satisfies PageServerLoad;
 
-
 const formSchema = createInsertSchema(visitor);
 
 export const actions = {

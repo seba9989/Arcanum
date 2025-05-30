@@ -2,9 +2,10 @@
 	import { cn } from '$lib/utility/cn';
 	import type { HTMLButtonAttributes } from 'svelte/elements';
 
-	let { children, class: className, ...props }: HTMLButtonAttributes = $props();
+	type Props = HTMLButtonAttributes;
+	let { children, class: className, ...props }: Props = $props();
 </script>
 
-<button {...props} type="submit" class={cn('btn btn-primary', className)}>
+<button {...props} type="submit" class={cn('btn', className)}>
 	{@render children?.()}
 </button>

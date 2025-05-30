@@ -3,6 +3,7 @@
 	import Icon from '@iconify/svelte';
 	import type { PageData } from './$types';
 	import PrintModel from '$lib/component/PrintModel/PrintModel.svelte';
+	import Form from '$lib/component/Form';
 
 	let { data }: { data: PageData } = $props();
 
@@ -17,14 +18,12 @@
 	{#each data.visitors as visitor}
 		<li class="list-row bg-base-300">
 			<div class="list-col-grow text-lg">{visitor.firstName} {visitor.lastName}</div>
-			<form action="visitors/{visitor.id}?/remove" method="POST" use:enhance>
-				<button type="submit" class="btn btn-error btn-square">
-					<Icon class="m-2" height="none" icon="lucide:trash-2" />
-				</button>
-			</form>
+			<Form.Self action="visitors/{visitor.id}?/remove" class="btn-error btn-square">
+				<Icon class="h-full p-2" height="none" icon="lucide:trash-2" />
+			</Form.Self>
 		</li>
 	{/each}
 </ul>
 
 <!-- Models -->
-<PrintModel />
+<PrintModel type="visitor" />

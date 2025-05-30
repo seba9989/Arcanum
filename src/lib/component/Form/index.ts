@@ -5,4 +5,6 @@ import CodeScanner from './assets/CodeScanner.svelte';
 import Field from './assets/Field.svelte';
 import Submit from './assets/Submit.svelte';
 
-export default Object.assign(Form, { Checkbox, CodeScanner, Field, Submit });
+import Self from './assets/Self.svelte';
+
+export default Object.assign(Form, { Checkbox, CodeScanner, Field, Submit, Self });

@@ -2,6 +2,7 @@
 	import Icon from '@iconify/svelte';
 	import type { PageData } from './$types';
 	import { enhance } from '$app/forms';
+	import Form from '$lib/component/Form';
 
 	let { data }: { data: PageData } = $props();
 </script>
@@ -18,11 +19,9 @@
 				</a>
 			</div> -->
 			<div class="list-col-grow text-lg">{user.username}</div>
-			<form action="users/{user.id}?/remove" method="POST" use:enhance>
-				<button type="submit" class="btn btn-error btn-square">
-					<Icon class="m-2" height="none" icon="lucide:trash-2" />
-				</button>
-			</form>
+			<Form.Self action="users/{user.id}?/remove" class="btn-error btn-square">
+				<Icon class="m-2" height="none" icon="lucide:trash-2" />
+			</Form.Self>
 		</li>
 	{/each}
 </ul>
@@ -30,13 +29,11 @@
 <input type="checkbox" id="new_user_modal" class="modal-toggle" />
 <div class="modal" role="dialog">
 	<div class="modal-box">
-		<form action="?/create" method="post" class="space-y-4" use:enhance>
-			<input name="username" type="text" class="input w-full" placeholder="Login" />
-			<input name="password" type="text" class="input w-full" placeholder="Password" />
-			<div class="flex justify-end gap-4">
-				<label for="new_user_modal" class="btn btn-error">Close</label>
-				<button type="submit" class="btn btn-primary">Stwórz</button>
-			</div>
-		</form>
+		<Form action="?/create">
+			<Form.Field name="username" placeholder="Login" class="w-full" />
+			<Form.Field name="password" placeholder="Password" class="w-full" />
+			<Form.Submit class="btn-primary self-end">Stwórz</Form.Submit>
+		</Form>
 	</div>
+	<label class="modal-backdrop" for="new_user_modal"></label>
 </div>
